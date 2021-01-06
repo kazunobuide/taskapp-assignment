@@ -18,6 +18,7 @@ class InputViewController: UIViewController {
     //課題で追加。categoryのTextFieldを追加、Outletをつなげる
     @IBOutlet weak var categoryTextField: UITextField!
     
+    
     let realm = try! Realm()
     var task: Task!
     
@@ -32,7 +33,7 @@ class InputViewController: UIViewController {
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         //（課題）
-        //categoryTextField.text = task.category
+        categoryTextField.text = task.category
         datePicker.date = task.date
     }
         
@@ -43,7 +44,7 @@ class InputViewController: UIViewController {
             self.task.date = self.datePicker.date
             self.realm.add(self.task, update: .modified)
             //（課題）categoryの値を代入
-           // self.task.category = self.categoryTextField.text!
+           self.task.category = self.categoryTextField.text!
         }
         
         setNotification(task: task)   // 追加
