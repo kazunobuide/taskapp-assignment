@@ -27,6 +27,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
+        //（課題）
+        //searchBar.delegate = self
+        //searchBar.enablesReturnKeyAutomatically = false
     }
 
     // データの数（＝セルの数）を返すメソッド
@@ -75,7 +78,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
                 // データベースから削除する
                 try! realm.write {
-                    self.realm.delete(task)
+                    self.realm.delete(self.taskArray[indexPath.row])
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
                 // 未通知のローカル通知一覧をログ出力

@@ -15,6 +15,8 @@ class InputViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var datePicker: UIDatePicker!
+    //課題で追加。categoryのTextFieldを追加、Outletをつなげる
+    @IBOutlet weak var categoryTextField: UITextField!
     
     let realm = try! Realm()
     var task: Task!
@@ -29,20 +31,19 @@ class InputViewController: UIViewController {
         
         titleTextField.text = task.title
         contentsTextView.text = task.contents
+        //（課題）
+        //categoryTextField.text = task.category
         datePicker.date = task.date
     }
-    
-    @objc func dismissKeyboard(){
-        // キーボードを閉じる
-        view.endEditing(true)
-    }
         
-        override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         try! realm.write {
             self.task.title = self.titleTextField.text!
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
             self.realm.add(self.task, update: .modified)
+            //（課題）categoryの値を代入
+           // self.task.category = self.categoryTextField.text!
         }
         
         setNotification(task: task)   // 追加
@@ -56,7 +57,7 @@ class InputViewController: UIViewController {
             // タイトルと内容を設定(中身がない場合メッセージ無しで音だけの通知になるので「(xxなし)」を表示する)
             if task.title == "" {
                 content.title = "(タイトルなし)"
-               } else {
+            } else {
                 content.title = task.title
             }
             if task.contents == "" {
@@ -78,9 +79,8 @@ class InputViewController: UIViewController {
             let center = UNUserNotificationCenter.current()
             center.add(request) { (error) in
                 print(error ?? "ローカル通知登録 OK")  // error が nil ならローカル通知の登録に成功したと表示します。errorが存在すればerrorをm表示します。
-            }
 
-               // 未通知のローカル通知一覧をログ出力
+                // 未通知のローカル通知一覧をログ出力
             center.getPendingNotificationRequests { (requests: [UNNotificationRequest]) in
                 for request in requests {
                     print("/---------------")
@@ -92,7 +92,10 @@ class InputViewController: UIViewController {
         
         
 }
-
+@objc func dismissKeyboard(){
+     //キーボードを閉じる
+     view.endEditing(true)
+    }
         // Do any additional setup after loading the view.
     
 
@@ -105,3 +108,4 @@ class InputViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
